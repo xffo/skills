@@ -1,0 +1,210 @@
+http://www.liaoxuefeng.com/
+
+>1----------basic command----------
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
+>2----------function----------
+print
+raw_input() 读取的内容永远以字符串的形式返回
+exit()
+
+http://docs.python.org/2/library/functions.html
+help(<function>)
+
+def <function name>:
+	if not isinstance(x, (int, float)):
+		raise TypeError('msg')
+	else:
+		return <tuple>
+
+pass
+None
+
+param=default 默认参数
+func(*args, **kw)
+*args 可变参数
+**kw 关键字参数 含参数名的参数 函数内部自动组装为一个dict
+
+递归函数 尾递归(返回递归函数本身)
+栈溢出 http://code.activestate.com/recipes/474088-tail-call-optimization-decorator/
+Python标准的解释器没有针对尾递归做优化，任何递归函数都存在栈溢出的问题
+
+>3----------print format----------
+%d 整数
+%f 浮点数
+%s 字符串
+%x 十六进制整数
+%? 占位符
+%% %
+
+e.g. '%2d-%02d' % (3, 1) 
+	>' 3-01'
+e.g. '%.2f' % 3.1415926
+	>'3.14'
+
+>4----------collection----------
+>4.1----------list----------
+[<em1>,<em2>]
+len(<list>)
+<list>[<i>]
+<list>[-<i>]
+<list>.insert(<i>, <em>)
+<list>.append(<em>)
+<list>.append(<i>, <em>)
+<list>.pop()
+<list>.pop(<i>)
+<list>.sort()
+
+>4.2----------tuple----------
+(<em>)
+(<em>,)
+(<em1>,<em2>)
+有序列表叫元组
+初始化就不能修改
+定义一个只有1个元素的tuple，按小括号进行计算，计算结果自然是(1)>1
+只有1个元素的tuple定义时必须加一个逗号,，来消除歧义(1,)
+
+>4.3----------dict----------
+key-value json
+{<key>:<value>, ...}
+in <dict> 判断key是否存在
+<dict>.get(<key>)
+<dict>.get(<key>, <default value>)
+<dict>.pop(<key>) 删除
+
+
+>4.4----------set----------
+set(<list>)
+<set>.add(<list>)
+<set>.remove(<key>)
+
+
+>5----------condition----------
+if:
+if:else:
+if:elif:else:
+
+for in:
+
+while:
+
+>6----------advanced----------
+>>6.1----------Slice----------
+切片
+<list|str>[<start>:<end>:<step>]
+
+>>6.2----------Iteration----------
+迭代
+for ... in
+for v in <dict>.itervalues()
+for k, v in <dict>.iteritems()
+isinstance(<collection>, Iterable)
+
+>>6.3----------List Comprehensions----------
+列表生成式
+[x * x for x in range(1, 11)]
+[x * x for x in range(1, 11) if x % 2 == 0]
+[m + n for m in 'ABC' for n in 'XYZ']
+import os [d for d in os.listdir('.')] # os.listdir可以列出文件和目录
+[k + '=' + v for k, v in d.iteritems()] 使用两个变量来生成list
+[s.lower() for s in L] 把一个list中所有的字符串变成小写
+
+>>6.4----------Generator----------
+生成器
+受到内存限制，列表容量肯定是有限的
+列表元素可以按照某种算法推算出来
+一边循环一边计算的机制，称为生成器
+<generator>.next()
+yield 如果一个函数定义中包含yield关键字，那么这个函数就不再是一个普通函数，而是一个generator
+函数是顺序执行，遇到return语句或者最后一行函数语句就返回。
+而generator的函数，在每次调用next()的时候执行，遇到yield语句返回，再次执行时从上次返回的yield语句处继续执行。
+我们创建了一个generator后，基本上永远不会调用next()方法，而是通过for循环来迭代它
+
+>>>6.4.1----------simple Generator----------
+只要把一个列表生成式的[]改成()，就创建了一个generator
+[x * x for x in range(10)]
+(x * x for x in range(10))
+
+>>>6.4.1----------complex Generator----------
+e.g. 斐波拉契数列
+函数
+def fib(max):
+    n, a, b = 0, 0, 1
+    while n < max:
+        print b
+        a, b = b, a + b
+        n = n + 1
+生成器
+def fib(max):
+    n, a, b = 0, 0, 1
+    while n < max:
+        yield b
+        a, b = b, a + b
+        n = n + 1
+
+>7----------高阶函数----------
+map()
+函数接收两个参数，一个是函数，一个是序列，map将传入的函数依次作用到序列的每个元素，并把结果作为新的list返回
+
+reduce()
+把一个函数作用在一个序列[x1, x2, x3...]上，这个函数必须接收两个参数，reduce把结果继续和序列的下一个元素做累积作用
+
+filter()
+接收一个函数和一个序列，把传入的函数依次作用于每个元素，然后根据返回值是True还是False决定保留还是丢弃该元素
+
+sorted()
+可以对list进行排序
+还可以接收一个比较函数来实现自定义的排序
+
+高阶函数除了可以接受函数作为参数外，还可以把函数作为结果值返回
+
+闭包
+当一个函数返回了一个函数后，其内部的局部变量还被新函数引用
+返回闭包时牢记的一点就是：返回函数不要引用任何循环变量，或者后续会发生变化的变量
+原因就在于返回的函数引用了变量，但它并非立刻执行，变量变化完成后才执行
+
+匿名函数
+lambda表示匿名函数
+e.g. f(x)=x2
+	map(lambda x: x * x, [1, 2, 3, 4, 5, 6, 7, 8, 9])
+匿名函数有个限制，就是只能有一个表达式，不用写return，返回值就是该表达式的结果
+
+Decorator 装饰器
+@<fun>
+@functools.wraps()
+把原始函数的__name__等属性复制到wrapper()函数中，否则，有些依赖函数签名的代码执行就会出错
+不需要编写wrapper.__name__ = func.__name__，而是调用Python内置的functools.wraps
+
+Partial function 偏函数
+functools.partial
+把一个函数的某些参数给固定住（也就是设置默认值），返回一个新的函数，调用这个新函数会更简单
+创建偏函数时，实际上可以接收函数对象、*args和**kw这3个参数
+
+>8----------模块----------
+Package
+按目录来组织模块的方法，称为包
+每一个包目录下面都会有一个__init__.py的文件，这个文件是必须存在的，否则，Python就把这个目录当成普通目录，而不是一个包。__init__.py可以是空文件，也可以有Python代码
+
+安装第三方模块
+easy_install
+pip
+Windows安装Python，确保安装时勾选了pip和Add python.exe to Path
+第三方库都会在Python官方的pypi.python.org网站注册，要安装一个第三方库，必须先知道该库的名称，可以在官网或者pypi上搜索
+ Python Imaging Library的名称叫PIL，处理图片
+ MySQL的驱动：MySQL-python
+ 科学计算的NumPy库：numpy
+ 生成文本的模板工具Jinja2
+默认情况下，Python解释器会搜索当前目录，所有已安装的内置模块和第三方模块，搜索路径存放在sys模块的path变量中
+添加自己的搜索目录，有两种方法
+ 一是直接修改sys.path，添加要搜索的目录，这种方法是在运行时修改，运行结束后失效
+  import sys
+  sys.path.append('/Users/michael/my_py_scripts')
+ 二种方法是设置环境变量PYTHONPATH，该环境变量的内容会被自动添加到模块搜索路径中
+ 
+__future__
+把下一个新版本的特性导入到当前版本
+e.g. 测试字符串的表示方法
+ from __future__ import unicode_literals
+e.g. 测试除法运算
+ from __future__ import division
