@@ -1,2 +1,11 @@
 ssh -t xsnakek99,hocmystic@shell.sourceforge.net create
 ssh xsnakek99@shell.sourceforge.net
+
+R/W(SSH)
+hocmystic@git.pf.sourceforge.jp:/gitroot/h/ho/hocmystic/skills.git
+R/W(HTTPS)
+https://pf.sourceforge.jp/gitroot/h/ho/hocmystic/skills.git
+R/O
+git://git.pf.sourceforge.jp/gitroot/h/ho/hocmystic/skills.git
+R/O(HTTPS)
+http://pf.sourceforge.jp/gitroot/h/ho/hocmystic/skills.git
